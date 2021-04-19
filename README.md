@@ -1,12 +1,8 @@
-ok so we agreed that novolas a mutant so we made a better zori
-
-TODO: 
-
-add kotlin build files so we can actually use the loader
-*gonna test out the loader and see if i can do something about it -Terik*
-
-unchinese some of the code
-
-fix the texturedchams when rendering the chestplate, might be an issue with the texture in resources/assets.minecraft
-
-fix testnametags totempops, literally just crashes your game
+# OnPoint.IE/Zori2
+Zori2 is a utility mod for Minecraft 1.12.2 designed for 2b2t Crystal PvP
+## Developers
+Novola (Mutant One), Zopac (Mutant Two), BrownZombie (PRO-GAMER) (God Developer) (Made OffhandPearl)
+## Credits
+- Gopro336 - OyVey buildable src based off of the one me and fluffycq made
+- Fluffycq - Helping me with the OyVey buildable src (was still chinese but still)
+- Alpha432, PR2CE and the OyVey development team - OyVey
