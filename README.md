@@ -5,4 +5,4 @@ Novola (Mutant One), Zopac (Mutant Two), BrownZombie (PRO-GAMER) (God Developer)
 ## Credits
 - Gopro336 - OyVey buildable src based off of the one me and fluffycq made
 - Fluffycq - Helping me with the OyVey buildable src (was still chinese but still)
-- Alpha432, PR2CE and the OyVey development team - OyVey
+- Allah
