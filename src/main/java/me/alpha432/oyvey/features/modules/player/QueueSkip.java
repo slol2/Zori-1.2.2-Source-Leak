@@ -18,7 +18,7 @@ public class QueueSkip extends Module {
         this.Server = (Setting<ServerMode>) this.register(new Setting("Server", ServerMode.NORMAL));
         this.Mode = (Setting<SkipMode>) this.register(new Setting("Mode", SkipMode.NEW));
         this.Factor = (Setting<Integer>) this.register(new Setting("Factor", 0, 0, 60));
-        this.Retrys = (Setting<Integer>) this.register(new Setting("Retrys", 0, 0, 100));
+        this.Retrys = (Setting<Integer>) this.register(new Setting("Retries", 0, 0, 100));
     }
 
     @Override
