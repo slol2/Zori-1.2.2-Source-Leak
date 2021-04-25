@@ -69,7 +69,6 @@ public class ModuleManager
         this.modules.add(new GodModule());
         this.modules.add(new AutoWeb());
         this.modules.add(new AutoCrystal());
-        this.modules.add(new OyveyAutoCrystal());
         this.modules.add(new Killaura());
         this.modules.add(new Criticals());
         this.modules.add(new HoleFiller());
