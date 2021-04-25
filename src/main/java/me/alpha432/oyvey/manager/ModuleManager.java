@@ -39,6 +39,7 @@ public class ModuleManager
         //CLIENT
         this.modules.add(new ClickGui());
         this.modules.add(new FontMod());
+        this.modules.add(new GUIBlur());
         this.modules.add(new HudText());
         this.modules.add(new HudComponents());
         this.modules.add(new NickHider());
@@ -65,14 +66,16 @@ public class ModuleManager
         this.modules.add(new Offhand());
         this.modules.add(new Surround());
         this.modules.add(new AutoTrap());
+        this.modules.add(new GodModule());
         this.modules.add(new AutoWeb());
         this.modules.add(new AutoCrystal());
+        this.modules.add(new OyveyAutoCrystal());
         this.modules.add(new Killaura());
         this.modules.add(new Criticals());
         this.modules.add(new HoleFiller());
         this.modules.add(new AutoArmor());
+        this.modules.add(new SelfCrystal());
         this.modules.add(new Selftrap());
-        this.modules.add(new Auto32k());
         this.modules.add(new SelfWeb());
         this.modules.add(new Quiver());
         this.modules.add(new AutoMinecart());
@@ -93,7 +96,9 @@ public class ModuleManager
         this.modules.add(new ExtraTab());
         this.modules.add(new NoHitBox());
         this.modules.add(new Timestamps());
+        this.modules.add(new NoSoundLag());
         this.modules.add(new ChatSuffix());
+        this.modules.add(new QueueSkip());
         this.modules.add(new NoHandShake());
         this.modules.add(new BuildHeight());
         this.modules.add(new ChatModifier());
@@ -101,15 +106,16 @@ public class ModuleManager
         this.modules.add(new PearlNotify());
         this.modules.add(new AutoGG());
         this.modules.add(new ToolTips());
+        this.modules.add(new RPC());
         this.modules.add(new Tracker());
         this.modules.add(new PopCounter());
         this.modules.add(new NarratorTweaks());
         this.modules.add(new GhastNotifier());
+        this.modules.add(new XCarry());
         //MOVEMENT
         this.modules.add(new PacketFly());
         this.modules.add(new Speed());
         this.modules.add(new Step());
-        this.modules.add(new VanillaSpeed());
         this.modules.add(new BoatFly());
         this.modules.add(new ReverseStep());
         this.modules.add(new AntiVoid());

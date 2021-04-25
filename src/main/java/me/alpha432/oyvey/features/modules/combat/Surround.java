@@ -104,10 +104,10 @@ public class Surround
         if (check()) {
             return;
         }
-        if (!EntityUtil.isSafe(Surround.mc.player, 0, true)) {
+        if (!EntityUtil.isSafe(Surround.mc.player, 0, true, false)) {
             isSafe = 0;
             placeBlocks(Surround.mc.player.getPositionVector(), EntityUtil.getUnsafeBlockArray(Surround.mc.player, 0, true), true, false, false);
-        } else if (!EntityUtil.isSafe(Surround.mc.player, -1, false)) {
+        } else if (!EntityUtil.isSafe(Surround.mc.player, -1, false, false)) {
             isSafe = 1;
             placeBlocks(Surround.mc.player.getPositionVector(), EntityUtil.getUnsafeBlockArray(Surround.mc.player, -1, false), false, false, true);
         } else {

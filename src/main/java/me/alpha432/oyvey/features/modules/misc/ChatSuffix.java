@@ -1,8 +1,6 @@
 package me.alpha432.oyvey.features.modules.misc;
 
 import me.alpha432.oyvey.features.modules.Module;
-import me.alpha432.oyvey.features.modules.combat.AutoCrystal;
-import me.alpha432.oyvey.features.setting.Setting;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

@@ -4,9 +4,8 @@ import me.alpha432.oyvey.features.modules.client.ClickGui;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
@@ -61,37 +60,6 @@ public class RotationUtil
         return MathHelper.floor((double) (RotationUtil.mc.player.rotationYaw * 4.0f / 360.0f) + 0.5) & 3;
     }
 
-    public static float[] simpleFacing(EnumFacing facing) {
-        switch (facing) {
-            case DOWN: {
-                return new float[]{RotationUtil.mc.player.rotationYaw, 90.0f};
-            }
-            case UP: {
-                return new float[]{RotationUtil.mc.player.rotationYaw, -90.0f};
-            }
-            case NORTH: {
-                return new float[]{180.0f, 0.0f};
-            }
-            case SOUTH: {
-                return new float[]{0.0f, 0.0f};
-            }
-            case WEST: {
-                return new float[]{90.0f, 0.0f};
-            }
-        }
-        return new float[]{270.0f, 0.0f};
-    }
-
-    public static float transformYaw() {
-        float yaw = RotationUtil.mc.player.rotationYaw % 360.0f;
-        if (RotationUtil.mc.player.rotationYaw > 0.0f) {
-            if (yaw > 180.0f) {
-                yaw = -180.0f + (yaw - 180.0f);
-            }
-        }
-        return yaw;
-    }
-
     public static boolean isInFov(final BlockPos pos) {
         return pos != null && (RotationUtil.mc.player.getDistanceSq(pos) < 4.0 || isInFov(new Vec3d((Vec3i)pos), RotationUtil.mc.player.getPositionVector()));
     }
@@ -116,7 +84,15 @@ public class RotationUtil
         final float fov = (ClickGui.getInstance().customFov.getValue() ? ClickGui.getInstance().fov.getValue() : RotationUtil.mc.gameSettings.fovSetting) / 2.0f;
         return angle < fov + 10.0f && angle > -fov - 10.0f;
     }
-
+    public static float transformYaw() {
+        float yaw = RotationUtil.mc.player.rotationYaw % 360.0f;
+        if (RotationUtil.mc.player.rotationYaw > 0.0f) {
+            if (yaw > 180.0f) {
+                yaw = -180.0f + (yaw - 180.0f);
+            }
+        }
+        return yaw;
+    }
     public static String getDirection4D(boolean northRed) {
         int dirnumber = RotationUtil.getDirection4D();
         if (dirnumber == 0) {

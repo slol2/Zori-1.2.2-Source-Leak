@@ -4,7 +4,7 @@ buildscript {
         jcenter()
         maven {
             name = 'forge'
-            url = 'http://files.minecraftforge.net/maven'
+            url = 'https://files.minecraftforge.net/maven'
         }
         maven {
             name = 'SpongePowered'
@@ -30,11 +30,6 @@ compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
 minecraft {
     version = project.forgeVersion
     runDir = 'run'
@@ -53,7 +48,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'net.jodah:typetools:0.5.0'
     compile group: "com.googlecode.json-simple", name: "json-simple", version: "1.1.1"
     compile('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'launchwrapper'
@@ -61,6 +55,7 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
+
     compile 'club.minnced:java-discord-rpc:2.0.2'
     //compile 'com.googlecode.json-simple:json-simple:1.1.1'
 

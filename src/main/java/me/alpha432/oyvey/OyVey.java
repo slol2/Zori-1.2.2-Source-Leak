@@ -12,11 +12,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import me.alpha432.oyvey.util.Title;
 
-@Mod(modid = "zori", name = "zori", version = "1.2.0")
+@Mod(modid = "zori", name = "zori", version = "1.2.1")
 public class OyVey {
     public static final String MODID = "zori";
     public static final String MODNAME = "Zori";
-    public static final String MODVER = "1.2.0";
+    public static final String MODVER = "1.2.1";
     public static final Logger LOGGER = LogManager.getLogger("zori");
     public static TimerManager timerManager;
     public static CommandManager commandManager;
@@ -34,7 +34,7 @@ public class OyVey {
     public static FileManager fileManager;
     public static ConfigManager configManager;
     public static ServerManager serverManager;
-    public static ZoriEventManager eventManager;
+    public static EventManager eventManager;
     public static TextManager textManager;
     public static CustomFont fontRenderer;
     public static Render3DEvent render3DEvent;
@@ -60,7 +60,7 @@ public class OyVey {
         moduleManager = new ModuleManager();
         rotationManager = new RotationManager();
         packetManager = new PacketManager();
-        eventManager = new ZoriEventManager();
+        eventManager = new EventManager();
         speedManager = new SpeedManager();
         potionManager = new PotionManager();
         inventoryManager = new InventoryManager();

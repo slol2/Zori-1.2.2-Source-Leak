@@ -12,15 +12,13 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +26,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
+
+import static me.alpha432.oyvey.util.HoleFillUtil.faceVectorPacketInstant;
+import static me.alpha432.oyvey.util.HoleFillUtil.processRightClickBlock;
 
 public class BlockUtil
         implements Util {
@@ -40,6 +41,21 @@ public class BlockUtil
         NonNullList positions = NonNullList.create();
         positions.addAll(BlockUtil.getSphere(EntityUtil.getPlayerPos(BlockUtil.mc.player), breakRange, (int) breakRange, false, true, 0).stream().filter(pos -> clazz.isInstance(BlockUtil.mc.world.getBlockState(pos).getBlock())).collect(Collectors.toList()));
         return positions;
+    }
+    public static void placeBlockScaffold(final BlockPos pos) {
+        final Vec3d eyesPos = new Vec3d(BlockUtil.mc.player.posX, BlockUtil.mc.player.posY + BlockUtil.mc.player.getEyeHeight(), BlockUtil.mc.player.posZ);
+        for (final EnumFacing side : EnumFacing.values()) {
+            final BlockPos neighbor = pos.offset(side);
+            final EnumFacing side2 = side.getOpposite();
+            final Vec3d hitVec;
+            if (canBeClicked(neighbor) && eyesPos.squareDistanceTo(hitVec = new Vec3d((Vec3i)neighbor).add(0.5, 0.5, 0.5).add(new Vec3d(side2.getDirectionVec()).scale(0.5))) <= 18.0625) {
+                faceVectorPacketInstant(hitVec);
+                processRightClickBlock(neighbor, side2, hitVec);
+                BlockUtil.mc.player.swingArm(EnumHand.MAIN_HAND);
+                BlockUtil.mc.rightClickDelayTimer = 4;
+                return;
+            }
+        }
     }
 
     public static List<EnumFacing> getPossibleSides(BlockPos pos) {
@@ -94,23 +110,6 @@ public class BlockUtil
             return 3;
         }
         return 2;
-    }
-
-    public static List<BlockPos> getDisc(final BlockPos pos, final float r) {
-        final List<BlockPos> circleblocks = new ArrayList<BlockPos>();
-        final int cx = pos.getX();
-        final int cy = pos.getY();
-        final int cz = pos.getZ();
-        for (int x = cx - (int)r; x <= cx + r; ++x) {
-            for (int z = cz - (int)r; z <= cz + r; ++z) {
-                final double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z);
-                if (dist < r * r) {
-                    final BlockPos position = new BlockPos(x, cy, z);
-                    circleblocks.add(position);
-                }
-            }
-        }
-        return circleblocks;
     }
 
     public static void rightClickBlock(BlockPos pos, Vec3d vec, EnumHand hand, EnumFacing direction, boolean packet) {
@@ -251,39 +250,34 @@ public class BlockUtil
         }
     }
 
-    public static List<BlockPos> possiblePlacePositions(float placeRange, boolean specialEntityCheck) {
+    public static List<BlockPos> possiblePlacePositions(float placeRange, boolean specialEntityCheck, boolean oneDot15) {
         NonNullList positions = NonNullList.create();
-        positions.addAll(BlockUtil.getSphere(EntityUtil.getPlayerPos(BlockUtil.mc.player), placeRange, (int) placeRange, false, true, 0).stream().filter(pos -> BlockUtil.canPlaceCrystal(pos, specialEntityCheck)).collect(Collectors.toList()));
+        positions.addAll(BlockUtil.getSphere(EntityUtil.getPlayerPos(BlockUtil.mc.player), placeRange, (int) placeRange, false, true, 0).stream().filter(pos -> BlockUtil.canPlaceCrystal(pos, specialEntityCheck, oneDot15)).collect(Collectors.toList()));
         return positions;
     }
 
-    public static boolean canPlaceCrystal(BlockPos blockPos, boolean specialEntityCheck) {
-        block7:
-        {
-            BlockPos boost = blockPos.add(0, 1, 0);
-            BlockPos boost2 = blockPos.add(0, 2, 0);
-            try {
-                if (BlockUtil.mc.world.getBlockState(blockPos).getBlock() != Blocks.BEDROCK && BlockUtil.mc.world.getBlockState(blockPos).getBlock() != Blocks.OBSIDIAN) {
-                    return false;
-                }
-                if (BlockUtil.mc.world.getBlockState(boost).getBlock() != Blocks.AIR || BlockUtil.mc.world.getBlockState(boost2).getBlock() != Blocks.AIR) {
-                    return false;
-                }
-                if (specialEntityCheck) {
-                    for (Entity entity : BlockUtil.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost))) {
-                        if (entity instanceof EntityEnderCrystal) continue;
-                        return false;
-                    }
-                    for (Entity entity : BlockUtil.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2))) {
-                        if (entity instanceof EntityEnderCrystal) continue;
-                        return false;
-                    }
-                    break block7;
-                }
-                return BlockUtil.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && BlockUtil.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
-            } catch (Exception ignored) {
+    public static boolean canPlaceCrystal(BlockPos blockPos, boolean specialEntityCheck, boolean oneDot15) {
+        BlockPos boost = blockPos.add(0, 1, 0);
+        BlockPos boost2 = blockPos.add(0, 2, 0);
+        try {
+            if (BlockUtil.mc.world.getBlockState(blockPos).getBlock() != Blocks.BEDROCK && BlockUtil.mc.world.getBlockState(blockPos).getBlock() != Blocks.OBSIDIAN) {
                 return false;
             }
+            if (!oneDot15 && BlockUtil.mc.world.getBlockState(boost2).getBlock() != Blocks.AIR || BlockUtil.mc.world.getBlockState(boost).getBlock() != Blocks.AIR) {
+                return false;
+            }
+            for (Entity entity : BlockUtil.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost))) {
+                if (entity.isDead || specialEntityCheck && entity instanceof EntityEnderCrystal) continue;
+                return false;
+            }
+            if (!oneDot15) {
+                for (Entity entity : BlockUtil.mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2))) {
+                    if (entity.isDead || specialEntityCheck && entity instanceof EntityEnderCrystal) continue;
+                    return false;
+                }
+            }
+        } catch (Exception ignored) {
+            return false;
         }
         return true;
     }
@@ -312,10 +306,13 @@ public class BlockUtil
         Command.sendMessage(message + pos.getX() + "x, " + pos.getY() + "y, " + pos.getZ() + "z");
     }
 
-    public static void placeCrystalOnBlock(BlockPos pos, EnumHand hand) {
+    public static void placeCrystalOnBlock(BlockPos pos, EnumHand hand, boolean swing, boolean exactHand) {
         RayTraceResult result = BlockUtil.mc.world.rayTraceBlocks(new Vec3d(BlockUtil.mc.player.posX, BlockUtil.mc.player.posY + (double) BlockUtil.mc.player.getEyeHeight(), BlockUtil.mc.player.posZ), new Vec3d((double) pos.getX() + 0.5, (double) pos.getY() - 0.5, (double) pos.getZ() + 0.5));
         EnumFacing facing = result == null || result.sideHit == null ? EnumFacing.UP : result.sideHit;
         BlockUtil.mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(pos, facing, hand, 0.0f, 0.0f, 0.0f));
+        if (swing) {
+            BlockUtil.mc.player.connection.sendPacket(new CPacketAnimation(exactHand ? hand : EnumHand.MAIN_HAND));
+        }
     }
 
     public static BlockPos[] toBlockPos(Vec3d[] vec3ds) {
@@ -411,4 +408,3 @@ public class BlockUtil
         return BlockUtil.rayTracePlaceCheck(pos, true);
     }
 }
-

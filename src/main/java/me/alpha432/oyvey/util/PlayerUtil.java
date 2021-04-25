@@ -18,20 +18,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-
-import javax.annotation.Nullable;
 
 public class PlayerUtil implements Util {
     private static final JsonParser PARSER = new JsonParser();
-    public static final Minecraft mc = Minecraft.getMinecraft();
-    private StringBuffer name = null;
-
-    @Nullable
-    public static EntityPlayerSP getPlayer(){
-        return mc.player;
-    }
 
     public static String getNameFromUUID(UUID uuid) {
         try {

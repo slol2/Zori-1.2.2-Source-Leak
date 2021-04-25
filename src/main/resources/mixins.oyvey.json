@@ -21,6 +21,8 @@
     "MixinRenderItem",
     "MixinRenderLivingBase",
     "MixinRenderPlayer",
-    "MixinWorld"
+    "MixinWorld",
+    "accessors.IC00Handshake",
+    "accessors.IServerAddress"
   ]
 }

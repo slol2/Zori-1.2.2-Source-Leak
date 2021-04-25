@@ -3,13 +3,13 @@
     "modid": "zori",
     "name": "zori",
     "description": "zori",
-    "version": "1.2.0",
-    "mcversion": "",
-    "logoFile": "niggahack.png",
+    "version": "1.2.1",
+    "mcversion": "1.12.2",
+    "logoFile": "Zori.png",
     "url": "https://freemanatee.org",
     "updateUrl": "",
     "authorList": [
-      "Novola, PR2CE, Alpha432, 3911"
+      "Novola, PR2CE, Alpha432, 3911, terik, slol"
     ],
     "screenshots": [],
     "dependencies": []

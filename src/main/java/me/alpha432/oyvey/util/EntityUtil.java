@@ -2,6 +2,7 @@ package me.alpha432.oyvey.util;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.alpha432.oyvey.OyVey;
+import me.alpha432.oyvey.mixin.mixins.IEntityLivingBase;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -10,6 +11,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityBoat;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -41,99 +43,15 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.*;
 
-import net.minecraft.util.math.AxisAlignedBB;
-
 public class EntityUtil
         implements Util {
-    private static EntityUtil instance;
     public static final Vec3d[] antiDropOffsetList = new Vec3d[]{new Vec3d(0.0, -2.0, 0.0)};
     public static final Vec3d[] platformOffsetList = new Vec3d[]{new Vec3d(0.0, -1.0, 0.0), new Vec3d(0.0, -1.0, -1.0), new Vec3d(0.0, -1.0, 1.0), new Vec3d(-1.0, -1.0, 0.0), new Vec3d(1.0, -1.0, 0.0)};
     public static final Vec3d[] legOffsetList = new Vec3d[]{new Vec3d(-1.0, 0.0, 0.0), new Vec3d(1.0, 0.0, 0.0), new Vec3d(0.0, 0.0, -1.0), new Vec3d(0.0, 0.0, 1.0)};
     public static final Vec3d[] OffsetList = new Vec3d[]{new Vec3d(1.0, 1.0, 0.0), new Vec3d(-1.0, 1.0, 0.0), new Vec3d(0.0, 1.0, 1.0), new Vec3d(0.0, 1.0, -1.0), new Vec3d(0.0, 2.0, 0.0)};
     public static final Vec3d[] antiStepOffsetList = new Vec3d[]{new Vec3d(-1.0, 2.0, 0.0), new Vec3d(1.0, 2.0, 0.0), new Vec3d(0.0, 2.0, 1.0), new Vec3d(0.0, 2.0, -1.0)};
     public static final Vec3d[] antiScaffoldOffsetList = new Vec3d[]{new Vec3d(0.0, 3.0, 0.0)};
-    public static final EntityDistance entityDistance = new EntityDistance();
-    public static final BlockDistance blockDistance = new BlockDistance();
-    private StringBuffer name = null;
-
-    public static EntityUtil getInstance() {
-        if (instance == null) {
-            instance = new EntityUtil();
-        }
-        return instance;
-    }
-
-    public String Nick() {
-        if (this.name == null) {
-            return null;
-        }
-        return this.name.toString();
-    }
-
-    public static double getBaseMoveSpeed() {
-        double baseSpeed = 0.2873;
-        if (mc.player != null && mc.player.isPotionActive(Potion.getPotionById(1))) {
-            final int amplifier = mc.player.getActivePotionEffect(Potion.getPotionById(1)).getAmplifier();
-            baseSpeed *= 1.0 + 0.2 * (amplifier + 1);
-        }
-        return baseSpeed;
-    }
-
-    public static Block isColliding(double posX, double posY, double posZ) {
-        Block block = null;
-        if (mc.player != null) {
-            final AxisAlignedBB bb = mc.player.getRidingEntity() != null ? mc.player.getRidingEntity().getEntityBoundingBox().contract(0.0d, 0.0d, 0.0d).offset(posX, posY, posZ) : mc.player.getEntityBoundingBox().contract(0.0d, 0.0d, 0.0d).offset(posX, posY, posZ);
-            int y = (int) bb.minY;
-            for (int x = MathHelper.floor(bb.minX); x < MathHelper.floor(bb.maxX) + 1; x++) {
-                for (int z = MathHelper.floor(bb.minZ); z < MathHelper.floor(bb.maxZ) + 1; z++) {
-                    block = mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
-                }
-            }
-        }
-        return block;
-    }
-
-
-    public static double[] calculateLookAt(double px, double py, double pz, EntityPlayer me) {
-        double dirx = me.posX - px;
-        double diry = me.posY + me.getEyeHeight() - py;
-        double dirz = me.posZ - pz;
-
-        double len = Math.sqrt(dirx * dirx + diry * diry + dirz * dirz);
-
-        dirx /= len;
-        diry /= len;
-        dirz /= len;
-
-        double pitch = Math.asin(diry);
-        double yaw = Math.atan2(dirz, dirx);
-
-        //to degree
-        pitch = pitch * 180.0d / Math.PI;
-        yaw = yaw * 180.0d / Math.PI;
-
-        yaw += 90f;
-
-        return new double[]{yaw, pitch};
-    }
-
-    private static class EntityDistance implements Comparator<Entity> {
-        @Override
-        public int compare(Entity p1, Entity p2) {
-            final double one = Math.sqrt(mc.player.getDistanceSq(p1));
-            final double two = Math.sqrt(mc.player.getDistanceSq(p2));
-            return Double.compare(one, two);
-        }
-    }
-
-    private static class BlockDistance implements Comparator<BlockPos> {
-        @Override
-        public int compare(BlockPos pos1, BlockPos pos2) {
-            final double one = Math.sqrt(mc.player.getDistanceSq(pos1));
-            final double two = Math.sqrt(mc.player.getDistanceSq(pos2));
-            return Double.compare(one, two);
-        }
-    }
+    public static final Vec3d[] doubleLegOffsetList = new Vec3d[]{new Vec3d(-1.0, 0.0, 0.0), new Vec3d(1.0, 0.0, 0.0), new Vec3d(0.0, 0.0, -1.0), new Vec3d(0.0, 0.0, 1.0), new Vec3d(-2.0, 0.0, 0.0), new Vec3d(2.0, 0.0, 0.0), new Vec3d(0.0, 0.0, -2.0), new Vec3d(0.0, 0.0, 2.0)};
 
     public static void attackEntity(Entity entity, boolean packet, boolean swingArm) {
         if (packet) {
@@ -174,6 +92,15 @@ public class EntityUtil
         return EntityUtil.getInterpolatedAmount(entity, partialTicks, partialTicks, partialTicks);
     }
 
+    public static double getBaseMoveSpeed() {
+        double baseSpeed = 0.2873;
+        if (mc.player != null && mc.player.isPotionActive(Potion.getPotionById(1))) {
+            final int amplifier = mc.player.getActivePotionEffect(Potion.getPotionById(1)).getAmplifier();
+            baseSpeed *= 1.0 + 0.2 * (amplifier + 1);
+        }
+        return baseSpeed;
+    }
+
     public static boolean isPassive(Entity entity) {
         if (entity instanceof EntityWolf && ((EntityWolf) entity).isAngry()) {
             return false;
@@ -184,7 +111,7 @@ public class EntityUtil
         return entity instanceof EntityIronGolem && ((EntityIronGolem) entity).getRevengeTarget() == null;
     }
 
-    public static boolean isSafe(Entity entity, int height, boolean floor) {
+    public static boolean isSafe(Entity entity, int height, boolean floor, boolean face) {
         return EntityUtil.getUnsafeBlocks(entity, height, floor).size() == 0;
     }
 
@@ -196,7 +123,7 @@ public class EntityUtil
     }
 
     public static boolean isSafe(Entity entity) {
-        return EntityUtil.isSafe(entity, 0, false);
+        return EntityUtil.isSafe(entity, 0, false, true);
     }
 
     public static BlockPos getPlayerPos(EntityPlayer player) {
@@ -334,10 +261,6 @@ public class EntityUtil
         return vec3ds;
     }
 
-    public static boolean holding32k(EntityPlayer player) {
-        return EntityUtil.is32k(player.getHeldItemMainhand());
-    }
-
     public static boolean isInWater(Entity entity) {
         if (entity == null) {
             return false;
@@ -355,60 +278,6 @@ public class EntityUtil
 
     public static boolean isDrivenByPlayer(Entity entityIn) {
         return EntityUtil.mc.player != null && entityIn != null && entityIn.equals(EntityUtil.mc.player.getRidingEntity());
-    }
-
-    public static boolean isInLiquid() {
-        if (EntityUtil.mc.player.fallDistance >= 3.0f) {
-            return false;
-        }
-        boolean inLiquid = false;
-        AxisAlignedBB bb = EntityUtil.mc.player.getRidingEntity() != null ? EntityUtil.mc.player.getRidingEntity().getEntityBoundingBox() : EntityUtil.mc.player.getEntityBoundingBox();
-        int y = (int)bb.minY;
-        for (int x = MathHelper.floor((double)bb.minX); x < MathHelper.floor((double)bb.maxX) + 1; ++x) {
-            for (int z = MathHelper.floor((double)bb.minZ); z < MathHelper.floor((double)bb.maxZ) + 1; ++z) {
-                Block block = EntityUtil.mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
-                if (block instanceof BlockAir) continue;
-                if (!(block instanceof BlockLiquid)) {
-                    return false;
-                }
-                inLiquid = true;
-            }
-        }
-        return inLiquid;
-    }
-
-    public static boolean isOnLiquid(double offset) {
-        if (EntityUtil.mc.player.fallDistance >= 3.0f) {
-            return false;
-        }
-        AxisAlignedBB bb = EntityUtil.mc.player.getRidingEntity() != null ? EntityUtil.mc.player.getRidingEntity().getEntityBoundingBox().contract(0.0, 0.0, 0.0).offset(0.0, -offset, 0.0) : EntityUtil.mc.player.getEntityBoundingBox().contract(0.0, 0.0, 0.0).offset(0.0, -offset, 0.0);
-        boolean onLiquid = false;
-        int y = (int)bb.minY;
-        for (int x = MathHelper.floor((double)bb.minX); x < MathHelper.floor((double)(bb.maxX + 1.0)); ++x) {
-            for (int z = MathHelper.floor((double)bb.minZ); z < MathHelper.floor((double)(bb.maxZ + 1.0)); ++z) {
-                Block block = EntityUtil.mc.world.getBlockState(new BlockPos(x, y, z)).getBlock();
-                if (block == Blocks.AIR) continue;
-                if (!(block instanceof BlockLiquid)) {
-                    return false;
-                }
-                onLiquid = true;
-            }
-        }
-        return onLiquid;
-    }
-
-    public static boolean isAboveLiquid(Entity entity) {
-        if (entity == null) {
-            return false;
-        }
-        double n = entity.posY + 0.01;
-        for (int i = MathHelper.floor((double)entity.posX); i < MathHelper.ceil((double)entity.posX); ++i) {
-            for (int j = MathHelper.floor((double)entity.posZ); j < MathHelper.ceil((double)entity.posZ); ++j) {
-                if (!(EntityUtil.mc.world.getBlockState(new BlockPos(i, (int)n, j)).getBlock() instanceof BlockLiquid)) continue;
-                return true;
-            }
-        }
-        return false;
     }
 
     public static boolean isPlayer(Entity entity) {
@@ -432,6 +301,21 @@ public class EntityUtil
             }
         }
         return false;
+    }
+    public static double[] calculateLookAt(final double px, final double py, final double pz, final EntityPlayer me) {
+        double dirx = me.posX - px;
+        double diry = me.posY - py;
+        double dirz = me.posZ - pz;
+        final double len = Math.sqrt(dirx * dirx + diry * diry + dirz * dirz);
+        dirx /= len;
+        diry /= len;
+        dirz /= len;
+        double pitch = Math.asin(diry);
+        double yaw = Math.atan2(dirz, dirx);
+        pitch = pitch * 180.0 / 3.141592653589793;
+        yaw = yaw * 180.0 / 3.141592653589793;
+        yaw += 90.0;
+        return new double[] { yaw, pitch };
     }
 
     public static List<Vec3d> getUntrappedBlocksExtended(int extension, EntityPlayer player, boolean antiScaffold, boolean antiStep, boolean legs, boolean platform, boolean antiDrop, boolean raytrace) {
@@ -688,6 +572,10 @@ public class EntityUtil
         return color;
     }
 
+    public static boolean isMoving() {
+        return (double) EntityUtil.mc.player.moveForward != 0.0 || (double) EntityUtil.mc.player.moveStrafing != 0.0;
+    }
+
     public static boolean isMoving(EntityLivingBase entity) {
         return entity.moveForward != 0 || entity.moveStrafing != 0;
     }
@@ -720,6 +608,23 @@ public class EntityUtil
     public static BlockPos getPlayerPosWithEntity() {
         return new BlockPos(EntityUtil.mc.player.getRidingEntity() != null ? EntityUtil.mc.player.getRidingEntity().posX : EntityUtil.mc.player.posX, EntityUtil.mc.player.getRidingEntity() != null ? EntityUtil.mc.player.getRidingEntity().posY : EntityUtil.mc.player.posY, EntityUtil.mc.player.getRidingEntity() != null ? EntityUtil.mc.player.getRidingEntity().posZ : EntityUtil.mc.player.posZ);
     }
+    public static boolean isCrystalAtFeet(final EntityEnderCrystal crystal, final double range) {
+        for (final EntityPlayer player : EntityUtil.mc.world.playerEntities) {
+            if (EntityUtil.mc.player.getDistanceSq(player) > range * range) {
+                continue;
+            }
+            if (OyVey.friendManager.isFriend(player)) {
+                continue;
+            }
+            for (final Vec3d vec : EntityUtil.doubleLegOffsetList) {
+                if (new BlockPos(player.getPositionVector()).add(vec.x, vec.y, vec.z) == crystal.getPosition()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     public static double[] forward(double speed) {
         float forward = EntityUtil.mc.player.movementInput.moveForward;
@@ -743,6 +648,17 @@ public class EntityUtil
         double posX = (double) forward * speed * cos + (double) side * speed * sin;
         double posZ = (double) forward * speed * sin - (double) side * speed * cos;
         return new double[]{posX, posZ};
+    }
+    public static void swingArmNoPacket(final EnumHand hand, final EntityLivingBase entity) {
+        final ItemStack stack = entity.getHeldItem(hand);
+        if (!stack.isEmpty() && stack.getItem().onEntitySwing(entity, stack)) {
+            return;
+        }
+        if (!entity.isSwingInProgress || entity.swingProgressInt >= ((IEntityLivingBase) entity).getArmSwingAnimationEnd() / 2 || entity.swingProgressInt < 0) {
+            entity.swingProgressInt = -1;
+            entity.isSwingInProgress = true;
+            entity.swingingHand = hand;
+        }
     }
 
     public static Map<String, Integer> getTextRadarPlayers() {
@@ -793,4 +709,3 @@ public class EntityUtil
         return entity.posY >= (double) blockPos.getY();
     }
 }
-

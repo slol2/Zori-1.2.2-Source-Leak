@@ -5,7 +5,7 @@ import me.alpha432.oyvey.features.modules.client.ClickGui;
 import me.alpha432.oyvey.util.ColorUtil;
 
 import java.awt.*;
-
+//written
 public class ColorManager {
     private float red = 1.0f;
     private float green = 1.0f;
