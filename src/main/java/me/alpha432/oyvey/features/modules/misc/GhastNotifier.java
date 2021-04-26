@@ -9,8 +9,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.init.SoundEvents;
 
-public class GhastNotifier
-        extends Module {
+public class GhastNotifier extends Module {
+
     private Set<Entity> ghasts = new HashSet<Entity>();
     public Setting<Boolean> Chat = this.register(new Setting<Boolean>("Chat", true));
     public Setting<Boolean> Sound = this.register(new Setting<Boolean>("Sound", true));
