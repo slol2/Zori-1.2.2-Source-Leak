@@ -33,7 +33,7 @@ public class HudText extends Module {
     private final Setting<Boolean> waterMark3 = register(new Setting("slolwatermark", Boolean.valueOf(false), "displays watermark"));
     public Setting<Integer> waterMarkY = register(new Setting("WatermarkPosY", Integer.valueOf(2), Integer.valueOf(0), Integer.valueOf(20), v -> ((Boolean)waterMark.getValue()).booleanValue()));
     public Setting<Integer> waterMark2Y = register(new Setting("Watermark2PosY", Integer.valueOf(2), Integer.valueOf(0), Integer.valueOf(100), v -> ((Boolean)waterMark2.getValue()).booleanValue()));
-    public Setting<Integer> waterMark3Y = register(new Setting("slolwatermarkY", Integer.valueOf(2), Integer.valueOf(0), Integer.valueOf(100), v -> ((Boolean)waterMark2.getValue()).booleanValue()));
+    public Setting<Integer> waterMark3Y = register(new Setting("slolwatermarkY", Integer.valueOf(2), Integer.valueOf(0), Integer.valueOf(100), v -> ((Boolean)waterMark3.getValue()).booleanValue()));
     private final Setting<Boolean> arrayList = register(new Setting("ActiveModules", Boolean.valueOf(false), "Lists the active modules."));
     private final Setting<Boolean> pvp = register(new Setting("PvpInfo", true));
     private final Setting<Boolean> coords = register(new Setting("Coords", Boolean.valueOf(false), "Your current coordinates"));
