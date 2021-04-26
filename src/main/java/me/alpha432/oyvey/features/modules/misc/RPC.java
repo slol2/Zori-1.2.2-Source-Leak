@@ -1,6 +1,5 @@
 package me.alpha432.oyvey.features.modules.misc;
 
-
 import me.alpha432.oyvey.DiscordPresence;
 import me.alpha432.oyvey.features.modules.Module;
 import me.alpha432.oyvey.features.setting.Setting;
