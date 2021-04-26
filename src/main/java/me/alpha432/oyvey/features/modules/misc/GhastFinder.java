@@ -1,4 +1,4 @@
-package me.alpha432.oyvey.features.modules.oldfag;
+package me.alpha432.oyvey.features.modules.misc;
 
 import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.modules.Module;
