@@ -52,6 +52,7 @@ public class HudText extends Module {
     public Setting<String> command = register(new Setting("Command", "zori.club"));
     public Setting<TextUtil.Color> bracketColor = register(new Setting("BracketColor", TextUtil.Color.RED));
     public Setting<TextUtil.Color> commandColor = register(new Setting("NameColor", TextUtil.Color.GRAY));
+    public Setting<Boolean> rainbowPrefix = this.register(new Setting<Boolean>("RainbowPrefix", false));
     public Setting<String> commandBracket = register(new Setting("Bracket", "["));
     public Setting<String> commandBracket2 = register(new Setting("Bracket2", "]"));
     public Setting<Boolean> notifyToggles = register(new Setting("ChatNotify", Boolean.valueOf(false), "notifys in chat"));
@@ -66,7 +67,7 @@ public class HudText extends Module {
     private int hitMarkerTimer;
 
     public HudText() {
-        super("HudText", "HUD Elements rendered on your screen", Module.Category.CLIENT, true, false, false);
+        super("Hud", "HUD Elements rendered on your screen", Module.Category.CLIENT, true, false, false);
         setInstance();
     }
 
@@ -96,7 +97,7 @@ public class HudText extends Module {
         int height = renderer.scaledHeight;
         color = ColorUtil.toRGBA(((Integer)(ClickGui.getInstance()).red.getValue()).intValue(), ((Integer)(ClickGui.getInstance()).green.getValue()).intValue(), ((Integer)(ClickGui.getInstance()).blue.getValue()).intValue());
         if (((Boolean)waterMark.getValue()).booleanValue()) {
-            String string = (String)command.getPlannedValue() + " v1.2.1";
+            String string = (String)command.getPlannedValue() + " v1.2.2";
             if (((Boolean)(ClickGui.getInstance()).rainbow.getValue()).booleanValue()) {
                 if ((ClickGui.getInstance()).rainbowModeHud.getValue() == ClickGui.rainbowMode.Static) {
                     renderer.drawString(string, 2.0F, ((Integer)waterMarkY.getValue()).intValue(), ColorUtil.rainbow(((Integer)(ClickGui.getInstance()).rainbowHue.getValue()).intValue()).getRGB(), true);
@@ -616,9 +617,25 @@ public class HudText extends Module {
     }
 
     public String getCommandMessage() {
-        return TextUtil.coloredString(commandBracket.getPlannedValue(), bracketColor.getPlannedValue()) + TextUtil.coloredString(command.getPlannedValue(), commandColor.getPlannedValue()) + TextUtil.coloredString(commandBracket2.getPlannedValue(), bracketColor.getPlannedValue());
+        if (this.rainbowPrefix.getPlannedValue().booleanValue()) {
+            StringBuilder stringBuilder = new StringBuilder(this.getRawCommandMessage());
+            stringBuilder.insert(0, "\u00a7+");
+            stringBuilder.append("\u00a7r");
+            return stringBuilder.toString();
+        }
+        return TextUtil.coloredString(this.commandBracket.getPlannedValue(), this.bracketColor.getPlannedValue()) + TextUtil.coloredString(this.command.getPlannedValue(), this.commandColor.getPlannedValue()) + TextUtil.coloredString(this.commandBracket2.getPlannedValue(), this.bracketColor.getPlannedValue());
     }
 
+    public String getRainbowCommandMessage() {
+        StringBuilder stringBuilder = new StringBuilder(this.getRawCommandMessage());
+        stringBuilder.insert(0, "\u00a7+");
+        stringBuilder.append("\u00a7r");
+        return stringBuilder.toString();
+    }
+
+    public String getRawCommandMessage() {
+        return this.commandBracket.getValue() + this.command.getValue() + this.commandBracket2.getValue();
+    }
     public void drawTextRadar(int yOffset) {
         if (!players.isEmpty()) {
             int y = renderer.getFontHeight() + 7 + yOffset;

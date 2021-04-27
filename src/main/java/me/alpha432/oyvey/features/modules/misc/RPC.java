@@ -13,7 +13,7 @@ public class RPC extends Module
     public RPC() {
         super("RPC", "Discord rich presence", Category.MISC, false, false, false);
         this.showIP = (Setting<Boolean>)this.register(new Setting("ShowIP", true, "Shows the server IP in your discord presence."));
-        this.state = (Setting<String>)this.register(new Setting("State", "Zori 1.2.1", "Sets the state of the DiscordRPC."));
+        this.state = (Setting<String>)this.register(new Setting("State", "Zori 1.2.2", "Sets the state of the DiscordRPC."));
         RPC.INSTANCE = this;
     }
 
