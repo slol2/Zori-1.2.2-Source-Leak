@@ -6,7 +6,7 @@ import me.alpha432.oyvey.OyVey;
 import me.alpha432.oyvey.event.events.*;
 import me.alpha432.oyvey.features.Feature;
 import me.alpha432.oyvey.features.command.Command;
-import me.alpha432.oyvey.features.modules.client.HudText;
+import me.alpha432.oyvey.features.modules.client.HUD;
 import me.alpha432.oyvey.features.modules.misc.PopCounter;
 import me.alpha432.oyvey.util.Timer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -55,7 +55,7 @@ public class EventManager extends Feature {
         if (!fullNullCheck() && (event.getEntity().getEntityWorld()).isRemote && event.getEntityLiving().equals(mc.player)) {
             OyVey.inventoryManager.update();
             OyVey.moduleManager.onUpdate();
-            if ((HudText.getInstance()).renderingMode.getValue() == HudText.RenderingMode.Length) {
+            if ((HUD.getInstance()).renderingMode.getValue() == HUD.RenderingMode.Length) {
                 OyVey.moduleManager.sortModules(true);
             } else {
                 OyVey.moduleManager.sortModulesABC();

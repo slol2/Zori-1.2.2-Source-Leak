@@ -36,16 +36,17 @@ public class TextManager
         this.drawString(text, x, y, color, true);
     }
 
-    public void drawString(String text, float x, float y, int color, boolean shadow) {
+    public float drawString(String text, float x, float y, int color, boolean shadow) {
         if (OyVey.moduleManager.isModuleEnabled(FontMod.getInstance().getName())) {
             if (shadow) {
                 this.customFont.drawStringWithShadow(text, x, y, color);
             } else {
                 this.customFont.drawString(text, x, y, color);
             }
-            return;
+            return x;
         }
         TextManager.mc.fontRenderer.drawString(text, x, y, color, shadow);
+        return x;
     }
     public void drawRainbowString(String text, float x, float y, int startColor, float factor, boolean shadow) {
         Color currentColor = new Color(startColor);

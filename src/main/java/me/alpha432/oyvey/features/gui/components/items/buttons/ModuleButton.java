@@ -4,7 +4,7 @@ import me.alpha432.oyvey.features.gui.OyVeyGui;
 import me.alpha432.oyvey.features.gui.components.Component;
 import me.alpha432.oyvey.features.gui.components.items.Item;
 import me.alpha432.oyvey.features.modules.Module;
-import me.alpha432.oyvey.features.modules.client.HudText;
+import me.alpha432.oyvey.features.modules.client.HUD;
 import me.alpha432.oyvey.features.setting.Bind;
 import me.alpha432.oyvey.features.setting.Setting;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -73,7 +73,7 @@ public class ModuleButton
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
         if (!this.items.isEmpty()) {
-            if (HudText.getInstance().magenDavid.getValue().booleanValue()) {
+            if (HUD.getInstance().magenDavid.getValue().booleanValue()) {
                 mc.getTextureManager().bindTexture(this.logo);
                 ModuleButton.drawCompleteImage(this.x - 1.5f + (float) this.width - 7.4f, this.y - 2.2f - (float) OyVeyGui.getClickGui().getTextOffset(), 8, 8);
             }

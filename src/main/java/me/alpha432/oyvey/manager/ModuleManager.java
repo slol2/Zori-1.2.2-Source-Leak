@@ -39,9 +39,8 @@ public class ModuleManager
         //CLIENT
         this.modules.add(new ClickGui());
         this.modules.add(new FontMod());
-        this.modules.add(new Colors());
         this.modules.add(new GUIBlur());
-        this.modules.add(new HudText());
+        this.modules.add(new HUD());
         this.modules.add(new HudComponents());
         this.modules.add(new NickHider());
         //RENDER
@@ -298,18 +297,18 @@ public class ModuleManager
 
         @Override
         public void run() {
-            if (HudText.getInstance().renderingMode.getValue() == HudText.RenderingMode.Length) {
+            if (HUD.getInstance().renderingMode.getValue() == HUD.RenderingMode.Length) {
                 for (Module module : ModuleManager.this.sortedModules) {
                     String text = module.getDisplayName() + ChatFormatting.GRAY + (module.getDisplayInfo() != null ? " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : "");
-                    module.offset = (float) ModuleManager.this.renderer.getStringWidth(text) / HudText.getInstance().animationHorizontalTime.getValue().floatValue();
-                    module.vOffset = (float) ModuleManager.this.renderer.getFontHeight() / HudText.getInstance().animationVerticalTime.getValue().floatValue();
-                    if (module.isEnabled() && HudText.getInstance().animationHorizontalTime.getValue() != 1) {
+                    module.offset = (float) ModuleManager.this.renderer.getStringWidth(text) / HUD.getInstance().animationHorizontalTime.getValue().floatValue();
+                    module.vOffset = (float) ModuleManager.this.renderer.getFontHeight() / HUD.getInstance().animationVerticalTime.getValue().floatValue();
+                    if (module.isEnabled() && HUD.getInstance().animationHorizontalTime.getValue() != 1) {
                         if (!(module.arrayListOffset > module.offset) || Util.mc.world == null) continue;
                         module.arrayListOffset -= module.offset;
                         module.sliding = true;
                         continue;
                     }
-                    if (!module.isDisabled() || HudText.getInstance().animationHorizontalTime.getValue() == 1) continue;
+                    if (!module.isDisabled() || HUD.getInstance().animationHorizontalTime.getValue() == 1) continue;
                     if (module.arrayListOffset < (float) ModuleManager.this.renderer.getStringWidth(text) && Util.mc.world != null) {
                         module.arrayListOffset += module.offset;
                         module.sliding = true;
@@ -321,15 +320,15 @@ public class ModuleManager
                 for (String e : ModuleManager.this.sortedModulesABC) {
                     Module module = OyVey.moduleManager.getModuleByName(e);
                     String text = module.getDisplayName() + ChatFormatting.GRAY + (module.getDisplayInfo() != null ? " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : "");
-                    module.offset = (float) ModuleManager.this.renderer.getStringWidth(text) / HudText.getInstance().animationHorizontalTime.getValue().floatValue();
-                    module.vOffset = (float) ModuleManager.this.renderer.getFontHeight() / HudText.getInstance().animationVerticalTime.getValue().floatValue();
-                    if (module.isEnabled() && HudText.getInstance().animationHorizontalTime.getValue() != 1) {
+                    module.offset = (float) ModuleManager.this.renderer.getStringWidth(text) / HUD.getInstance().animationHorizontalTime.getValue().floatValue();
+                    module.vOffset = (float) ModuleManager.this.renderer.getFontHeight() / HUD.getInstance().animationVerticalTime.getValue().floatValue();
+                    if (module.isEnabled() && HUD.getInstance().animationHorizontalTime.getValue() != 1) {
                         if (!(module.arrayListOffset > module.offset) || Util.mc.world == null) continue;
                         module.arrayListOffset -= module.offset;
                         module.sliding = true;
                         continue;
                     }
-                    if (!module.isDisabled() || HudText.getInstance().animationHorizontalTime.getValue() == 1) continue;
+                    if (!module.isDisabled() || HUD.getInstance().animationHorizontalTime.getValue() == 1) continue;
                     if (module.arrayListOffset < (float) ModuleManager.this.renderer.getStringWidth(text) && Util.mc.world != null) {
                         module.arrayListOffset += module.offset;
                         module.sliding = true;

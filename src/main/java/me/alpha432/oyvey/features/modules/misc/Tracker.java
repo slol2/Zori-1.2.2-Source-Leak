@@ -3,7 +3,7 @@ package me.alpha432.oyvey.features.modules.misc;
 import me.alpha432.oyvey.event.events.DeathEvent;
 import me.alpha432.oyvey.features.command.Command;
 import me.alpha432.oyvey.features.modules.Module;
-import me.alpha432.oyvey.features.modules.client.HudText;
+import me.alpha432.oyvey.features.modules.client.HUD;
 import me.alpha432.oyvey.util.EntityUtil;
 import me.alpha432.oyvey.util.TextUtil;
 import net.minecraft.entity.Entity;
@@ -37,7 +37,7 @@ public class Tracker extends Module {
             trackedPlayer = EntityUtil.getClosestEnemy(1000.0);
         } else if (usedStacks != usedExp / 64) {
             usedStacks = usedExp / 64;
-            Command.sendMessage(TextUtil.coloredString(trackedPlayer.getName() + " has used " + usedStacks + " stacks of XP!", HudText.getInstance().commandColor.getValue()));
+            Command.sendMessage(TextUtil.coloredString(trackedPlayer.getName() + " has used " + usedStacks + " stacks of XP!", HUD.getInstance().commandColor.getValue()));
         }
     }
 

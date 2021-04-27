@@ -1,7 +1,7 @@
 package me.alpha432.oyvey.manager;
 
 import me.alpha432.oyvey.features.Feature;
-import me.alpha432.oyvey.features.modules.client.HudText;
+import me.alpha432.oyvey.features.modules.client.HUD;
 import me.alpha432.oyvey.util.Timer;
 
 import java.text.DecimalFormat;
@@ -22,7 +22,7 @@ public class ServerManager
     }
 
     public boolean isServerNotResponding() {
-        return this.timer.passedMs(HudText.getInstance().lagTime.getValue().intValue());
+        return this.timer.passedMs(HUD.getInstance().lagTime.getValue().intValue());
     }
 
     public long serverRespondingTime() {

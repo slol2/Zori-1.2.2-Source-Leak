@@ -21,11 +21,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class HudText extends Module {
+public class HUD extends Module {
     private static final ResourceLocation box = new ResourceLocation("textures/gui/container/shulker_box.png");
     private static final ItemStack totem = new ItemStack(Items.TOTEM_OF_UNDYING);
     private static RenderItem itemRender;
-    private static HudText INSTANCE = new HudText();
+    private static HUD INSTANCE = new HUD();
     private final Setting<Boolean> grayNess = register(new Setting("Gray", Boolean.valueOf(true)));
     private final Setting<Boolean> renderingUp = register(new Setting("RenderingUp", Boolean.valueOf(false), "Orientation of the HUD-Elements."));
     private final Setting<Boolean> waterMark = register(new Setting("Watermark", Boolean.valueOf(false), "displays watermark"));
@@ -53,6 +53,7 @@ public class HudText extends Module {
     public Setting<TextUtil.Color> bracketColor = register(new Setting("BracketColor", TextUtil.Color.RED));
     public Setting<TextUtil.Color> commandColor = register(new Setting("NameColor", TextUtil.Color.GRAY));
     public Setting<Boolean> rainbowPrefix = this.register(new Setting<Boolean>("RainbowPrefix", false));
+    public Setting<Integer> rainbowSpeed = this.register(new Setting<Object>("PrefixSpeed", Integer.valueOf(20), Integer.valueOf(0), Integer.valueOf(100), v -> this.rainbowPrefix.getValue()));
     public Setting<String> commandBracket = register(new Setting("Bracket", "["));
     public Setting<String> commandBracket2 = register(new Setting("Bracket2", "]"));
     public Setting<Boolean> notifyToggles = register(new Setting("ChatNotify", Boolean.valueOf(false), "notifys in chat"));
@@ -63,17 +64,18 @@ public class HudText extends Module {
     public Setting<Boolean> time = register(new Setting("Time", Boolean.valueOf(false), "The time"));
     public Setting<Integer> lagTime = register(new Setting("LagTime", Integer.valueOf(1000), Integer.valueOf(0), Integer.valueOf(2000)));
     private int color;
+    public float hue;
     private boolean shouldIncrement;
     private int hitMarkerTimer;
 
-    public HudText() {
-        super("Hud", "HUD Elements rendered on your screen", Module.Category.CLIENT, true, false, false);
+    public HUD() {
+        super("HUD", "HUD Elements rendered on your screen", Module.Category.CLIENT, true, false, false);
         setInstance();
     }
 
-    public static HudText getInstance() {
+    public static HUD getInstance() {
         if (INSTANCE == null)
-            INSTANCE = new HudText();
+            INSTANCE = new HUD();
         return INSTANCE;
     }
 
@@ -616,6 +618,7 @@ public class HudText extends Module {
             OyVey.commandManager.setClientMessage(getCommandMessage());
     }
 
+
     public String getCommandMessage() {
         if (this.rainbowPrefix.getPlannedValue().booleanValue()) {
             StringBuilder stringBuilder = new StringBuilder(this.getRawCommandMessage());
@@ -636,6 +639,7 @@ public class HudText extends Module {
     public String getRawCommandMessage() {
         return this.commandBracket.getValue() + this.command.getValue() + this.commandBracket2.getValue();
     }
+
     public void drawTextRadar(int yOffset) {
         if (!players.isEmpty()) {
             int y = renderer.getFontHeight() + 7 + yOffset;
