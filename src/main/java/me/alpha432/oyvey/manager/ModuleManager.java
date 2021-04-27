@@ -83,7 +83,6 @@ public class ModuleManager
         this.modules.add(new SelfFill());
         this.modules.add(new InstantSelfFill());
         //PLAYER
-        this.modules.add(new FakeKick());
         this.modules.add(new Freecam());
         this.modules.add(new FastPlace());
         this.modules.add(new TpsSync());
