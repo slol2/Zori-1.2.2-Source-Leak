@@ -39,6 +39,7 @@ public class ModuleManager
         //CLIENT
         this.modules.add(new ClickGui());
         this.modules.add(new FontMod());
+        this.modules.add(new Colors());
         this.modules.add(new GUIBlur());
         this.modules.add(new HudText());
         this.modules.add(new HudComponents());
