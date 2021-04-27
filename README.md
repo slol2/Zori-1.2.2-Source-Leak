@@ -12,5 +12,8 @@ Or when SalC1 said:
 > Zori is probably the best client out right now
 >
 
-![alt text](https://github.com/zopac/zori-but-actually-good/blob/main/src/main/resources/Zori.png)
+Credits:
+> Zopac, FluffyCQ, Novola, Alpha432, Price, Terik, Slol, Sjnez
 
+Reason I'm Releasing This
+> Niggas tried to rat piggot and failed, reasoning is he got baited too hard
