@@ -16,7 +16,7 @@ import me.alpha432.oyvey.features.setting.Setting;
 
 public class InstantSelfFill extends Module {
     public InstantSelfFill() {
-        super("InstantSelfFill", "does the thing i guess", Module.Category.COMBAT, true, false, false);
+        super("InstantBurrow", "does the thing i guess", Module.Category.COMBAT, true, false, false);
     }
 
     private BlockPos originalPos;
